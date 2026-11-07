@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTA Ultimate Lore & Walkthrough Vault</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Synthwave & Vice City Theme Tokens */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #070611;
+            background-image: 
+                linear-gradient(to right, rgba(255, 0, 127, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .brand-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Neon Accent Classes */
+        .neon-text-cyan {
+            color: #00f3ff;
+            text-shadow: 0 0 8px rgba(0, 243, 255, 0.8), 0 0 20px rgba(0, 243, 255, 0.4);
+        }
+
+        .neon-text-pink {
+            color: #ff007f;
+            text-shadow: 0 0 8px rgba(255, 0, 127, 0.8), 0 0 20px rgba(255, 0, 127, 0.4);
+        }
+
+        .neon-text-gold {
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .neon-border-cyan {
+            border: 1px solid #00f3ff;
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.4), inset 0 0 12px rgba(0, 243, 255, 0.1);
+        }
+
+        .neon-border-pink {
+            border: 1px solid #ff007f;
+            box-shadow: 0 0 12px rgba(255, 0, 127, 0.4), inset 0 0 12px rgba(255, 0, 127, 0.1);
+        }
+
+        .neon-border-gold {
+            border: 1px solid #ffd700;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4), inset 0 0 12px rgba(255, 215, 0, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(18, 14, 36, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .retro-sun {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            height: 380px;
+            background: linear-gradient(to bottom, #ff007f 0%, #ff8a00 50%, #00f3ff 100%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(25px);
+            opacity: 0.2;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070611;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff007f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f3ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-pink-500 selection:text-white">
+
+    <!-- Header & Navigation -->
+    <nav class="sticky top-0 z-50 glass-card border-b border-gray-800 rounded-none bg-opacity-95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-4">
+                
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer shrink-0" onclick="navigateTo('dashboard')">
+                    <i class="fa-solid fa-gamepad text-2xl neon-text-pink"></i>
+                    <span class="brand-font font-black text-lg md:text-xl tracking-wider text-white">
+                        GTA <span class="neon-text-cyan">VAULT</span>
+                    </span>
+                </div>
+
+                <!-- Global Search -->
+                <div class="flex-1 max-w-lg relative">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                        <input type="text" id="global-search" placeholder="Search any mission, character or game..." 
+                            class="w-full bg-gray-900/90 border border-gray-700 text-xs text-white rounded-full pl-9 pr-4 py-2 focus:outline-none focus:border-[#00f3ff] transition-all">
+                    </div>
+                    <!-- Dropdown Results -->
+                    <div id="search-results" class="hidden absolute left-0 right-0 top-full mt-2 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl max-h-80 overflow-y-auto z-50 divide-y divide-gray-800"></div>
+                </div>
+
+                <!-- Quick Navigation Links -->
+                <div class="hidden sm:flex items-center space-x-3 text-xs font-semibold uppercase tracking-wider">
+                    <button onclick="navigateTo('dashboard')" class="hover:text-[#00f3ff] transition px-2 py-1">Games</button>
+                    <button onclick="scrollToChat()" class="neon-border-pink px-3 py-1.5 rounded-full text-white hover:bg-[#ff007f] hover:text-black transition">Safehouse Chat</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full relative">
+        <div class="retro-sun pointer-events-none"></div>
+
+        <!-- Dynamic Breadcrumb Navigation -->
+        <nav id="breadcrumb" class="flex items-center space-x-2 text-xs font-mono text-gray-400 mb-6 bg-gray-900/70 p-3 rounded-lg border border-gray-800 overflow-x-auto">
+            <!-- Injected by JavaScript -->
+        </nav>
+
+        <!-- VIEW 1: Dashboard (Game Selection Hub) -->
+        <section id="view-dashboard" class="space-y-8">
+            <div class="text-center space-y-3">
+                <h1 class="text-3xl sm:text-5xl font-black uppercase tracking-tight">
+                    <span class="neon-text-cyan">Grand Theft Auto</span> <span class="neon-text-pink">Vault</span>
+                </h1>
+                <p class="text-gray-400 text-xs sm:text-sm max-w-2xl mx-auto">
+                    The ultimate archive for GTA lore, complete mission walkthroughs, Gold Medal checklists, DLC operations, and video guides across all eras.
+                </p>
+            </div>
+
+            <!-- Game Cards Grid -->
+            <div id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected by JavaScript -->
+            </div>
+        </section>
+
+        <!-- VIEW 2: Game Hub (Lore & Category-Filtered Mission Database) -->
+        <section id="view-game" class="hidden space-y-8">
+            <!-- Header Banner -->
+            <div id="game-header" class="glass-card p-6 md:p-8">
+                <!-- Injected by JavaScript -->
+            </div>
+
+            <!-- Category Filter Buttons & Missions List Container -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-800 pb-3 gap-3">
+                    <div id="category-filters" class="flex flex-wrap items-center gap-2">
+                        <!-- Category tabs injected dynamically -->
+                    </div>
+                    <span id="mission-count" class="text-xs font-mono px-3 py-1 bg-gray-900 rounded-full text-cyan-400 border border-gray-700 w-fit">0 Missions</span>
+                </div>
+                <div id="missions-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Injected by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: Mission Detail & Walkthrough -->
+        <section id="view-mission" class="hidden space-y-8">
+            <div id="mission-content" class="glass-card p-6 md:p-8 border border-gray-700">
+                <!-- Injected by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Interactive Community Safehouse Chat -->
+    <section id="chat-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <div class="glass-card p-6 md:p-8 neon-border-cyan">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 pb-3 border-b border-gray-800 gap-3">
+                <div>
+                    <h3 class="text-lg font-bold brand-font text-white flex items-center gap-2">
+                        <i class="fa-solid fa-comments neon-text-pink"></i> Safehouse Comms Network
+                    </h3>
+                    <p class="text-xs text-gray-400">Share tips, ask for help on 100% Gold Medal requirements, or discuss GTA 6 rumors.</p>
+                </div>
+                <span class="inline-flex items-center gap-2 text-xs font-mono px-3 py-1 bg-green-950/80 text-green-400 border border-green-700 rounded-full w-fit">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Network Online
+                </span>
+            </div>
+
+            <!-- Preset Quick Prompts -->
+            <div class="flex flex-wrap gap-2 mb-3">
+                <button onclick="sendQuickPrompt('How do I get Gold on the Cayo Perico Heist?')" class="text-[11px] bg-gray-900 hover:bg-gray-800 text-cyan-400 border border-gray-700 rounded-full px-3 py-1 transition">
+                    💡 Cayo Perico Gold Tip
+                </button>
+                <button onclick="sendQuickPrompt('Which heist approach is best for Diamond Casino?')" class="text-[11px] bg-gray-900 hover:bg-gray-800 text-pink-400 border border-gray-700 rounded-full px-3 py-1 transition">
+                    💎 Diamond Casino Best Route
+                </button>
+                <button onclick="sendQuickPrompt('How do I complete Three Leaf Clover in GTA IV?')" class="text-[11px] bg-gray-900 hover:bg-gray-800 text-yellow-400 border border-gray-700 rounded-full px-3 py-1 transition">
+                    💰 Three Leaf Clover Strategy
+                </button>
+            </div>
+
+            <!-- Chat Message Box -->
+            <div id="chat-box" class="bg-gray-950/90 border border-gray-800 rounded-xl h-64 overflow-y-auto p-4 space-y-3 mb-4 text-xs shadow-inner">
+                <div class="bg-gray-900/80 border-l-4 border-cyan-400 p-3 rounded">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-bold text-cyan-400">System Operator</span>
+                        <span class="text-[10px] font-mono text-gray-500">Live</span>
+                    </div>
+                    <p class="text-gray-300">Welcome to the GTA Vault Comms Network. Search over 400+ detailed story, DLC, Strangers & Freaks, and Heist walkthroughs!</p>
+                </div>
+            </div>
+
+            <!-- Chat Submission Form -->
+            <form id="chat-form" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                <input type="text" id="chat-user" placeholder="Alias (e.g. Trevor_V)" 
+                    class="sm:col-span-3 bg-gray-900 border border-gray-700 text-white rounded-lg px-3.5 py-2 text-xs focus:outline-none focus:border-[#00f3ff]" required>
+                <input type="text" id="chat-msg" placeholder="Type a message or mission question..." 
+                    class="sm:col-span-7 bg-gray-900 border border-gray-700 text-white rounded-lg px-3.5 py-2 text-xs focus:outline-none focus:border-[#ff007f]" required>
+                <button type="submit" 
+                    class="sm:col-span-2 neon-border-pink bg-pink-600/20 hover:bg-[#ff007f] hover:text-black text-white font-bold text-xs uppercase tracking-wider rounded-lg py-2 transition">
+                    Send
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 bg-gray-950 py-6 text-center text-xs text-gray-500">
+        <p>Grand Theft Auto Ultimate Lore & Walkthrough Vault &bull; Community Knowledge Base</p>
+    </footer>
+
+    <!-- Comprehensive GTA Database & Application Code -->
+    <script>
+        // Expanded Master Database with HD Focus (GTA V, GTA IV + DLCs, SA, VC, III, 2, 1)
+        const gtaDatabase = {
+            "gta5": {
+                id: "gta5",
+                title: "Grand Theft Auto V & Online",
+                year: "2013-Present",
+                era: "HD Era",
+                city: "Los Santos & Blaine County",
+                tagline: "Three Lives, One Score & Online Heists",
+                color: "pink",
+                summary: "The defining HD era title tracking Michael, Franklin, and Trevor across story heists, Strangers & Freaks encounters, and sprawling GTA Online operations (Cayo Perico, Diamond Casino, Doomsday Heist).",
+                categories: ["All", "Main Story", "Heists", "Strangers & Freaks", "GTA Online Heists"],
+                missions: [
+                    // Main Story & Heists
+                    { id: "gta5_m1", cat: "Main Story", title: "Prologue", giver: "Michael & Trevor", objective: "Rob the cash depot in Ludendorff, North Yankton.", walkthrough: ["Hold hostages in the vault room.", "Trigger charge on vault door via phone app.", "Fight through North Yankton state police to the getaway vehicle."], gold: ["No hostages injured", "Complete within 3:30", "Headshot percentage over 70%"], tip: "Switch between Michael and Trevor to clear incoming cops from cover." },
+                    { id: "gta5_m2", cat: "Main Story", title: "Franklin and Lamar", giver: "Simeon Yetarian", objective: "Repo two sports cars in Vespucci Canals and race through downtown.", walkthrough: ["Choose between the 9F or Rapid GT.", "Follow Lamar through alleyways and construction zones.", "Deliver vehicle to Premium Deluxe Motorsport."], gold: ["Deliver car without damage", "Win the race against Lamar", "Use Franklin's special driving ability for 7+ seconds"], tip: "Activate Franklin's ability when taking sharp corners at high speed." },
+                    { id: "gta5_m3", cat: "Heists", title: "Jewel Store Job (Smart Approach)", giver: "Lester Crest", objective: "Gas the jewelry store and loot high-value cases under a strict timer.", walkthrough: ["Climb to the rooftop and throw BZ Gas into the AC vent.", "Enter store in gas masks; smash marked cases immediately.", "Escape through sewer tunnels on dirt bikes with Franklin leading."], gold: ["Loot all 20 glass cases within 50 seconds", "Protect your crew in sewer chase", "Clean getaway with no bike damage"], tip: "Use a high-skill hacker to grant extra looting seconds inside." },
+                    { id: "gta5_m4", cat: "Heists", title: "Jewel Store Job (Loud Approach)", giver: "Lester Crest", objective: "Storm Vangelico with heavy weapons and execute a fast smash-and-grab.", walkthrough: ["Drive to front of Vangelico and breach armed.", "Smash cases while subduing manager.", "Make high-speed getaway on bikes through subway construction."], gold: ["Loot all cases in under 50s", "Escape cops in under 2 mins", "Headshot 5 officers"], tip: "Fire over the guards' heads to keep intimidate meter full." },
+                    { id: "gta5_m5", cat: "Heists", title: "The Paleto Score", giver: "Lester Crest", objective: "Rob the Blaine County Savings Bank in Paleto Bay wearing heavy armor.", walkthrough: ["Breach vault and equip ballistic juggernaut suits.", "Mow down police and national guard with miniguns in street battle.", "Board cargo train at lumber yard."], gold: ["Fire over 4,000 rounds", "Achieve 50%+ accuracy", "Sustain less than $2,000 damage"], tip: "Focus minigun fire on military choppers before they deploy troops." },
+                    { id: "gta5_m6", cat: "Main Story", title: "The Third Way (Option C)", giver: "Franklin, Michael, Trevor", objective: "Unite to eliminate all enemies: Steve Haines, Stretch, Wei Cheng, and Devin Weston.", walkthrough: ["Defend foundry against combined Merryweather and FIB assault.", "Divide targets: Trevor snipes Haines, Michael kills Stretch, Franklin targets Cheng.", "Kidnap Devin Weston from his estate and push car off cliff."], gold: ["Time under 21:30", "Headshots: 20", "Accuracy 70%+", "Kill all targets personally"], tip: "Use Michael's bullet-time special ability during dense foundry gunfights." },
+
+                    // Strangers & Freaks
+                    { id: "gta5_m7", cat: "Strangers & Freaks", title: "Pulling Favors (Tonya)", giver: "Tonya Wiggins", objective: "Help Tonya tow an abandoned vehicle to the impound lot.", walkthrough: ["Drive tow truck to target location in South Los Santos.", "Hook vehicle from front bumper.", "Tow to impound lot without unhooking."], gold: ["Time under 5:00", "Keep towed vehicle hooked"], tip: "Align truck straight before reversing towards target vehicle." },
+                    { id: "gta5_m8", cat: "Strangers & Freaks", title: "Paparazzo - The Sex Tape (Beverly)", giver: "Beverly Felton", objective: "Help Beverly film a celebrity encounter secretly in Vinewood Hills.", walkthrough: ["Follow Beverly into garden of hotel estate.", "Keep camera zoomed on target couple until footage bar fills.", "Escape before security catches you."], gold: ["Quick footage fill", "Don't trip security alarm"], tip: "Stay crouched behind hedges while adjusting camera zoom." },
+                    { id: "gta5_m9", cat: "Strangers & Freaks", title: "Grass Roots - Michael", giver: "Barry", objective: "Survive alien hallucination trip in Legion Square using a minigun.", walkthrough: ["Equip infinite-ammo minigun.", "Destroy incoming alien waves from all angles.", "Prevent aliens from abduction beam touch."], gold: ["Sustain minimal damage", "Kill 7 aliens before they fire"], tip: "Keep spinning 360 degrees to spot teleporting aliens early." },
+                    { id: "gta5_m10", cat: "Strangers & Freaks", title: "Target Practice (Cletus)", giver: "Cletus", objective: "Complete sniper target shooting challenges in Sandy Shores.", walkthrough: ["Shoot 3 satellite dishes.", "Shoot tires on 3 moving cars on highway.", "Shoot 3 coyotes with single heart-shots."], gold: ["2 heart-shots on coyotes", "100% sniper accuracy"], tip: "Use breath hold mechanic to stabilize reticle on coyotes." },
+                    { id: "gta5_m11", cat: "Strangers & Freaks", title: "Bail Bonds (Maude)", giver: "Maude Eccles", objective: "Track down fugitive Ralph Pendelbury in the Grand Senora Desert.", walkthrough: ["Read Maude's email location photo.", "Locate Ralph at quarry.", "Stun or shoot leg to force surrender, then return to Maude."], gold: ["Capture target alive"], tip: "Use a Stun Gun to secure live capture without risking death." },
+
+                    // GTA Online Heists & DLCs
+                    { id: "gta5_m12", cat: "GTA Online Heists", title: "The Cayo Perico Heist (Solo/Group)", giver: "El Rubio / Pavel", objective: "Infiltrate compound on private island, steal primary target, and escape.", walkthrough: ["Scope island for drainage tunnel entry point.", "Use Kosatka submarine or Velum for approach.", "Enter compound silently via drainage pipe, cut vault glass/safe, exit island via southwest coast swimming."], gold: ["Complete in under 15:00 (Elite Challenge)", "0 Hack failures", "Full loot bags", "No alarms raised"], tip: "Use Armor Piercing pistol with suppressor and swim away underwater with rebreathers." },
+                    { id: "gta5_m13", cat: "GTA Online Heists", title: "The Diamond Casino Heist (Silent & Sneaky)", giver: "Lester Crest / Georgina Cheng", objective: "Infiltrate casino vault undetected, drill vault doors, and escape disguised.", walkthrough: ["Use EMP gadget at side door entrance.", "Sneak past guards, disable security cameras with taser.", "Drill vault door, loot cash/art/gold/diamonds before gas releases.", "Exit in firefighter/waste disposal uniforms."], gold: ["Elite Challenge: Time under 15:00", "0 quick restarts", "All loot secured"], tip: "Buy clean getaway vehicles parked at nearby sewer exit." },
+                    { id: "gta5_m14", cat: "GTA Online Heists", title: "The Doomsday Heist: Act III (The Scenario)", giver: "Avon Hertz / Lester", objective: "Infiltrate Mount Chiliad nuclear silo, hack terminal missile defense, stop Avon.", walkthrough: ["Storm silo with heavy weaponry against juggernauts.", "Complete 4-terminal hack minigame while teammates cover.", "Use jetpacks to pursue Avon Hertz in his stealth chopper."], gold: ["Elite Challenge: Under 30:00", "Zero deaths", "150 headshots"], tip: "Use thermal scope helmets to spot cloaked juggernauts in dark tunnels." }
+                ]
+            },
+            "gta4": {
+                id: "gta4",
+                title: "GTA IV & Episodes from Liberty City",
+                year: "2008-2009",
+                era: "HD Era",
+                city: "Liberty City",
+                tagline: "The American Dream & DLC Expansions",
+                color: "cyan",
+                summary: "Niko Bellic's grit in Liberty City, Johnny Klebitz's biker war in The Lost and Damned (TLAD), and Luis Lopez's nightclub empire in The Ballad of Gay Tony (TBOGT).",
+                categories: ["All", "Niko Bellic Story", "The Lost & Damned", "The Ballad of Gay Tony"],
+                missions: [
+                    // Niko Story
+                    { id: "gta4_m1", cat: "Niko Bellic Story", title: "The Cousins Bellic", giver: "Roman Bellic", objective: "Drive Roman from Broker docks to his apartment.", walkthrough: ["Take wheel of Roman's taxi.", "Drive carefully through Hove Beach following GPS.", "Watch apartment cutscene."], gold: [], tip: "Familiarize yourself with heavy suspension vehicle handling early." },
+                    { id: "gta4_m2", cat: "Niko Bellic Story", title: "Three Leaf Clover", giver: "Packie McReary", objective: "Rob Bank of Liberty in Chinatown and escape through subway.", walkthrough: ["Watch vault detonation cutscene.", "Fight off waves of police and NOOSE on Chinatown streets.", "Descend into subway tunnels on foot and run along tracks to getaway car."], gold: [], tip: "Stay behind low concrete barriers; health does not auto-regenerate." },
+                    { id: "gta4_m3", cat: "Niko Bellic Story", title: "Out of Commission (Revenge Ending)", giver: "Niko Bellic", objective: "Track down Jimmy Pegorino at old casino and eliminate him at Statue of Happiness.", walkthrough: ["Storm abandoned casino with Jacob and Roman.", "Pursue Pegorino on dirt bike along beach, jumping onto Jacob's chopper.", "Land at Happiness Island and finish Pegorino under Statue."], gold: [], tip: "Tap climb button rapidly during helicopter ledge climb animation." },
+                    
+                    // TLAD
+                    { id: "gta4_m4", cat: "The Lost & Damned", title: "Clean and Serene", giver: "Billy Grey", objective: "Reunite The Lost MC gang and retrieve Billy's custom chopper from Angels of Death.", walkthrough: ["Ride in V-formation behind Billy to increase health/armor.", "Confront Angels of Death at chop shop.", "Retrieve motorcycle and escort Billy back to clubhouse."], gold: ["Ride in formation 80% of trip"], tip: "Riding inside Billy's squad icon regenerates bike health instantly." },
+                    { id: "gta4_m5", cat: "The Lost & Damned", title: "Get Lost (Final Mission)", giver: "Johnny Klebitz", objective: "Storm Alderney State Penitentiary to eliminate traitorous Billy Grey.", walkthrough: ["Use Pipe Bombs to destroy prison gate.", "Fight through prison courtyard with grenade launcher.", "Execute Billy in main yard and escape back to clubhouse."], gold: ["Headshot count 25+", "No armor loss in courtyard"], tip: "The Automatic Shotgun with drum magazine clears indoor hallways instantly." },
+
+                    // TBOGT
+                    { id: "gta4_m6", cat: "The Ballad of Gay Tony", title: "I Luv LC", giver: "Tony Prince (Gay Tony)", objective: "Manage security at Hercules and Maisonette 9 clubs.", walkthrough: ["Drive Tony to Hercules club in Bahama Mamas district.", "Check club floor at Maisonette 9.", "Break up VIP lounge fight and drop off Tony at his apartment."], gold: ["Time under 4:30", "Player Damage under 10%"], tip: "Sprint directly between club floors without engaging patrons." },
+                    { id: "gta4_m7", cat: "The Ballad of Gay Tony", title: "Departure Time (Final Mission)", giver: "Tony & Luis", objective: "Intercept Ray Bulgarin at airport and stop cargo plane takeoff.", walkthrough: ["Drive motorcycle to Francis International Airport.", "Pursue jet down runway, shoot engine guards, and jump aboard.", "Execute Bulgarin inside plane and parachute safely to Meadows Park."], gold: ["Time under 10:00", "Player Damage < 20%", "Land precisely on park fountain"], tip: "Pull parachute cord late to drop quickly onto target fountain marker." }
+                ]
+            },
+            "gta_sa": {
+                id: "gta_sa",
+                title: "GTA: San Andreas",
+                year: "2004",
+                era: "3D Era",
+                city: "Los Santos, San Fierro, Las Venturas",
+                tagline: "Respect, Family & Betrayal",
+                color: "gold",
+                summary: "Carl 'CJ' Johnson returns home to Los Santos in 1992 following his mother's murder, sparking an epic journey across the state of San Andreas.",
+                categories: ["All", "Los Santos", "San Fierro", "Las Venturas / End"],
+                missions: [
+                    { id: "gta_sa_m1", cat: "Los Santos", title: "In the Beginning & Big Smoke", giver: "Sweet", objective: "Return home to Grove Street and escape Ballas drive-by on bicycles.", walkthrough: ["Hop on BMX bike.", "Follow Sweet and Ryder through alleyways.", "Evade Ballas car while sprinting on bike."], tip: "Tap sprint button rapidly to maintain maximum BMX speed." },
+                    { id: "gta_sa_m2", cat: "Los Santos", title: "Wrong Side of the Tracks", giver: "Big Smoke", objective: "Follow Vagos train on Sanchez bike while Big Smoke shoots.", walkthrough: ["Drive Sanchez alongside train.", "CRITICAL: Ride on outer right track so Smoke has shooting clearance.", "Maintain pace until all 4 targets fall."], tip: "Do not ride too close to train sides or bullets will hit train cars." },
+                    { id: "gta_sa_m3", cat: "San Fierro", title: "Are You Going to San Fierro?", giver: "The Truth", objective: "Burn weed fields with flamethrower and drive Mothership camper to SF.", walkthrough: ["Use flamethrower to burn all marked crop patches before timer expires.", "Destroy police chopper with RPG.", "Drive camper van to San Fierro garage."], tip: "Sweeping flamethrower side-to-side clears fields twice as fast." },
+                    { id: "gta_sa_m4", cat: "Las Venturas / End", title: "End of the Line (Final Mission)", giver: "CJ & Sweet", objective: "Destroy Big Smoke's crack fortress, kill Smoke, and stop Tenpenny.", walkthrough: ["Ram SWAT tank into fortress wall.", "Fight up three floors to penthouse.", "Kill Big Smoke in dark, escape burning building, catch Sweet off fire truck."], tip: "Equip Night Vision goggles when Smoke turns off penthouse lights." }
+                ]
+            },
+            "gta_vc": {
+                id: "gta_vc",
+                title: "GTA: Vice City",
+                year: "2002",
+                era: "3D Era",
+                city: "Vice City",
+                tagline: "Neon, Crime & 80s Glam",
+                color: "pink",
+                summary: "Ex-con Tommy Vercetti is sent to Vice City by Don Sonny Forelli. After an ambush ruins a drug deal, Tommy builds a neon-soaked criminal empire across Vice City's nightclub assets, gang turf, and high-stakes hit jobs.",
+                categories: ["All", "Main Story", "Ricardo Diaz", "Vercetti Mansion", "Gang Missions", "Asset Missions", "Payphone Hits"],
+                missions: [
+                    // Main Story / Ken Rosenberg & Cortez
+                    { id: "gta_vc_m1", cat: "Main Story", title: "In the Beginning...", giver: "Sonny Forelli", objective: "Arrive in Vice City, meet Ken Rosenberg, and get set up at Ocean View Hotel.", walkthrough: ["Watch airport cutscene with Harry and Lee.", "Drive the Admiral with Ken Rosenberg to Ocean View Hotel in Ocean Beach.", "Save game inside Tommy's suite."], tip: "Get familiar with Vice City's vehicle weight and drift physics early." },
+                    { id: "gta_vc_m2", cat: "Main Story", title: "An Old Friend", giver: "Ken Rosenberg", objective: "Report the ruined drug deal back to Sonny Forelli via public payphone.", walkthrough: ["Exit Ocean View Hotel and answer ringing payphone across the street.", "Listen to Sonny demand his money and product back.", "Return to Ken Rosenberg's law office."], tip: "Keep track of payphone locations as side missions trigger here later." },
+                    { id: "gta_vc_m3", cat: "Main Story", title: "The Party", giver: "Ken Rosenberg", objective: "Get fresh clothes at Rafael's and escort Colonel Cortez's daughter Mercedes.", walkthrough: ["Drive to Rafael's shop in Ocean Beach for a fresh suit.", "Drive to Colonel Cortez's yacht at the pier.", "Meet Vice City criminal bosses during cutscene.", "Escort Mercedes Cortez to the Pole Position Club in Vice Point."], tip: "The French Riviera suit triggers high-society access in future missions." },
+                    { id: "gta_vc_m4", cat: "Main Story", title: "Back Alley Brawl", giver: "Ken Rosenberg", objective: "Track down Kent Paul at Malibu Club and locate the chef in Washington Beach.", walkthrough: ["Drive to Malibu Club and confront Kent Paul.", "Head to Washington Beach alleyway to confront the French chef.", "Fight chef in hand-to-hand combat; pick up cell phone.", "Meet Lance Vance, jump into his Infernus, and escape 3 pursuing chefs."], tip: "Keep the chef's knife for early melee damage before acquiring guns." },
+                    { id: "gta_vc_m5", cat: "Main Story", title: "Treacherous Swine", giver: "Colonel Cortez", objective: "Eliminate Gonzalez with a chainsaw and escape the police heat.", walkthrough: ["Meet Colonel Cortez on his yacht; receive chainsaw.", "Drive to Gonzalez's penthouse apartment in Starfish Island.", "Chainsaw Gonzalez while his bodyguards attack.", "Drive to Pay 'n' Spray to clear the 2-star wanted level."], tip: "Ignore the bodyguards and sprint straight to Gonzalez to eliminate him instantly." },
+
+                    // Avery Carrington & Demolition
+                    { id: "gta_vc_m6", cat: "Main Story", title: "Four Iron", giver: "Avery Carrington", objective: "Assassinate real estate rival Donald Love's target on the golf course.", walkthrough: ["Drive to JockSport store to change into golf attire.", "Enter Leaf Links Golf Club (weapons stripped at metal detector).", "Use golf cart or melee weapons (golf club/katana) to eliminate target on driving range.", "Escape golf security on a Caddy."], tip: "Drive the Caddy into the water or jump the fence to clear security easily." },
+                    { id: "gta_vc_m7", cat: "Main Story", title: "Demolition Man", giver: "Avery Carrington", objective: "Use RC Helicopter to plant 4 bombs inside guarded construction site.", walkthrough: ["Enter TOP FUN van near construction site to start RC drone.", "Pick up first bomb to start the 7-minute timer.", "Fly inside building, slash construction workers with rotors, place bombs on 4 floors from bottom to top."], tip: "Fly into the building and decapitate all workers before touching the first bomb." },
+
+                    // Ricardo Diaz Operations
+                    { id: "gta_vc_m8", cat: "Ricardo Diaz", title: "The Chase", giver: "Ricardo Diaz", objective: "Pursue thief across rooftops to locate the stolen money hideout.", walkthrough: ["Look through window at Diaz's Starfish Island mansion.", "Pursue thief along rooftops in Vice Point.", "Shoot thief's leg if he runs; jump into Faggio or car to tail his getaway vehicle.", "Follow him to Prawn Island thief hideout without destroying his car."], tip: "Keep a safe distance so the alert meter doesn't fill while tailing." },
+                    { id: "gta_vc_m9", cat: "Ricardo Diaz", title: "Phnom Penh '86", giver: "Ricardo Diaz", objective: "Provide aerial minigun fire from Lance's chopper and retrieve stash.", walkthrough: ["Man the mounted M60 machine gun aboard Lance's helicopter.", "Eliminate rooftop guards across Prawn Island mansion compound.", "Land helicopter, clear ground floor guards, retrieve briefcase from roof."], tip: "Aim for explosive red barrels around enemy clusters on rooftops." },
+                    { id: "gta_vc_m10", cat: "Ricardo Diaz", title: "Rub Out", giver: "Tommy & Lance", objective: "Storm Diaz's Starfish Island estate, rescue Lance, and eliminate Diaz.", walkthrough: ["Equip M4 or Ruger assault rifles and full body armor.", "Storm front gates or back pool entrance of Starfish mansion.", "Fight through main foyer and office room.", "Execute Ricardo Diaz to claim his estate and start the Vercetti Gang."], tip: "Use the pool entrance on the left side to bypass heavy gate gunners." },
+
+                    // Vercetti Mansion & Asset Empire
+                    { id: "gta_vc_m11", cat: "Vercetti Mansion", title: "Shakedown", giver: "Tommy Vercetti", objective: "Smash all storefront windows in North Point Mall to enforce protection rackets.", walkthrough: ["Drive to North Point Mall in Vice Point.", "Equip Stubby Shotgun or SMG.", "Smash target shop windows within 5 minutes while evading 5-star police responses."], tip: "Use a fast motorcycle inside the mall hallways to speed between storefronts." },
+                    { id: "gta_vc_m12", cat: "Vercetti Mansion", title: "Bar Brawling", giver: "Tommy Vercetti", objective: "Eliminate security guards harassing Front Page Bar in Ocean Beach.", walkthrough: ["Recruit two Vercetti gang members from mansion foyer.", "Drive to Front Page Bar; kill two security guards.", "Interrogate bar owner; track down security company HQ.", "Destroy 2 getaway motorbikes with RPG or grenade launcher."], tip: "Park a car in front of the motorcycle alley to block the fleeing guards." },
+                    { id: "gta_vc_m13", cat: "Asset Missions", title: "The Job (Malibu Club Asset)", giver: "Tommy Vercetti", objective: "Execute a full-scale bank heist on El Banco Corrupto Grande.", walkthrough: ["Assemble crew: Phil Cassidy, Cam Jones, Hilary King.", "Drive to bank disguised in hockey masks.", "Breach vault with Cam while Phil guards hostages.", "Trigger alarm, fight SWAT squad outside, escape in Hilary's taxi to Pay 'n' Spray."], tip: "Throw tear gas or grenades at SWAT vans blocking the street before getting into taxi." },
+                    { id: "gta_vc_m14", cat: "Asset Missions", title: "Cap the Collector (Print Works Asset)", giver: "Print Works Manager", objective: "Eliminate Forelli mafia collectors extorting Tommy's Vice City assets.", walkthrough: ["Answer call from Kelly at Print Works.", "Hop on fast motorcycle (PCJ-600).", "Interceptors mafia collectors at Boatyard, Sunshine Autos, and Malibu Club before they steal cash revenue."], tip: "Drive-by motorcycle SMG fire takes down collector moped pairs instantly." },
+
+                    // Gang Missions
+                    { id: "gta_vc_m15", cat: "Gang Missions", title: "Naval Engagement", giver: "Umberto Robina (Cubans)", objective: "Ambush Haitian drug deal on Starfish Island jetty and steal briefcases.", walkthrough: ["Meet Umberto at cafe; drive boat to Starfish Island rear dock.", "Use sniper rifle or rocket launcher to clear Haitian boats and pier guards.", "Retrieve 4 drug briefcases.", "Escape back to cafe while dodging Haitian Voodoo pursuers."], tip: "Blow up the pier barrels first to wipe out half the Haitian militia instantly." },
+                    { id: "gta_vc_m16", cat: "Gang Missions", title: "Juju Scramble", giver: "Auntie Poulet (Haitians)", objective: "Retrieve 3 voodoo powder stashes hidden across Little Haiti under police surveillance.", walkthrough: ["Drink Auntie Poulet's potion.", "Collect 1st stash on rooftop (police SWAT ambush triggers).", "Collect 2nd stash at 4-star wanted level.", "Collect 3rd stash and clear wanted level at Pay 'n' Spray."], tip: "Use a helicopter to pick up rooftop stashes and bypass police road blocks." },
+
+                    // Payphone Hits & Finale
+                    { id: "gta_vc_m17", cat: "Payphone Hits", title: "Autocide", giver: "Mr. Black", objective: "Assassinate 5 European gang members across Vice City within 9 minutes.", walkthrough: ["Pick up sniper rifle and rocket launcher at payphone.", "Target 1 (Mike Griffin): Snipe from billboard opposite security site.", "Target 2 (Dick Tanner): Blow up security van.", "Target 3 & 4 (Franco/Marcus): Drive-by motorcycle ambush.", "Target 5 (Nick Kong): Shoot off boat deck."], tip: "Do not trigger target alarms early or they will initiate high-speed getaways." },
+                    { id: "gta_vc_m18", cat: "Main Story", title: "Keep Your Friends Close...", giver: "Tommy Vercetti", objective: "Defend Vercetti Estate vault, eliminate Lance Vance, and kill Sonny Forelli.", walkthrough: ["Defend safe room at top of mansion stairs against Forelli hit squads.", "Pursue traitor Lance Vance up to rooftop helipad and execute him.", "Return downstairs to main hall and eliminate Don Sonny Forelli."], tip: "Equip Minigun or M4 while taking cover behind the upstairs balcony pillars." }
+                ]
+            },
+            "gta3": {
+                id: "gta3",
+                title: "Grand Theft Auto III",
+                year: "2001",
+                era: "3D Era",
+                city: "Liberty City",
+                tagline: "The 3D Revolution",
+                color: "cyan",
+                summary: "Betrayed during a bank heist, silent protagonist Claude climbs the ladder of Liberty City's Mafia and Yakuza syndicates for cold revenge.",
+                categories: ["All", "Portland", "Staunton", "Shoreside"],
+                missions: [
+                    { id: "gta3_m1", cat: "Portland", title: "Give Me Liberty", giver: "8-Ball", objective: "Escape police custody on broken Callahan Bridge.", walkthrough: ["Take control of Kuruma after explosion.", "Drive 8-Ball to Red Light District hideout.", "Change into clothes and head to Luigi's club."], tip: "Avoid hitting police cars on your way." },
+                    { id: "gta3_m2", cat: "Shoreside", title: "The Exchange (Final Mission)", giver: "Catalina", objective: "Rescue Maria and eliminate Catalina at Cochrane Dam.", walkthrough: ["Deliver $500,000 cash to Cartel mansion.", "Survive courtyard ambush after Catalina escapes in chopper.", "Fight through Cochrane Dam, eliminate snipers, shoot down chopper."], tip: "Use Rocket Launcher on Catalina's helicopter when hovering low." }
+                ]
+            },
+            "gta2": {
+                id: "gta2",
+                title: "Grand Theft Auto 2",
+                year: "1999",
+                era: "2D Era",
+                city: "Anywhere City",
+                tagline: "Respect is Everything",
+                color: "gold",
+                summary: "Set in a retro-futuristic city, Claude Speed plays rival gang factions against each other for cash and respect.",
+                categories: ["All", "Downtown District"],
+                missions: [
+                    { id: "gta2_m1", cat: "Downtown District", title: "Zaibatsu Cleansing", giver: "Red Valdez", objective: "Eliminate Loonies gang leaders to max out Zaibatsu respect.", walkthrough: ["Check Zaibatsu respect meter.", "Plant explosives on three Loonies supply vans.", "Escape district before hitmen close in."], tip: "Use Molotov cocktails to clear groups without attracting police." }
+                ]
+            },
+            "gta1": {
+                id: "gta1",
+                title: "Grand Theft Auto 1",
+                year: "1997",
+                era: "2D Era",
+                city: "Liberty City, San Andreas, Vice City",
+                tagline: "The Top-Down Genesis",
+                color: "cyan",
+                summary: "The debut title that launched the franchise. Top-down action doing contracts for crime syndicates.",
+                categories: ["All", "Liberty City"],
+                missions: [
+                    { id: "gta1_m1", cat: "Liberty City", title: "Gangsta Bang", giver: "Bubby", objective: "Jack police cruisers and target rival syndicate vehicles.", walkthrough: ["Pick up payphone in South Liberty City.", "Steal police car near precinct.", "Destroy rival vehicles at docks."], tip: "Keep armor high before initiating dock gunfights." }
+                ]
+            }
+        };
+
+        // State Tracking
+        let currentState = {
+            view: "dashboard",
+            activeGameId: null,
+            activeMissionId: null,
+            activeCategory: "All"
+        };
+
+        // DOM Initializer
+        document.addEventListener("DOMContentLoaded", () => {
+            renderDashboard();
+            setupSearch();
+            setupChat();
+            updateBreadcrumb();
+        });
+
+        // Router Navigation
+        function navigateTo(view, gameId = null, missionId = null) {
+            currentState.view = view;
+            currentState.activeGameId = gameId;
+            currentState.activeMissionId = missionId;
+            if (view === "game") currentState.activeCategory = "All";
+
+            document.getElementById("view-dashboard").classList.add("hidden");
+            document.getElementById("view-game").classList.add("hidden");
+            document.getElementById("view-mission").classList.add("hidden");
+
+            if (view === "dashboard") {
+                document.getElementById("view-dashboard").classList.remove("hidden");
+            } else if (view === "game" && gameId) {
+                renderGameView(gameId);
+                document.getElementById("view-game").classList.remove("hidden");
+            } else if (view === "mission" && gameId && missionId) {
+                renderMissionView(gameId, missionId);
+                document.getElementById("view-mission").classList.remove("hidden");
+            }
+
+            updateBreadcrumb();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Dashboard View
+        function renderDashboard() {
+            const grid = document.getElementById("games-grid");
+            grid.innerHTML = "";
+
+            Object.values(gtaDatabase).forEach(game => {
+                const borderColor = game.color === "pink" ? "neon-border-pink" : (game.color === "gold" ? "neon-border-gold" : "neon-border-cyan");
+                const badgeColor = game.color === "pink" ? "text-pink-400 bg-pink-950/60" : (game.color === "gold" ? "text-yellow-400 bg-yellow-950/60" : "text-cyan-400 bg-cyan-950/60");
+
+                const card = document.createElement("div");
+                card.className = `glass-card p-5 sm:p-6 ${borderColor} flex flex-col justify-between cursor-pointer group`;
+                card.onclick = () => navigateTo("game", game.id);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-gray-700 ${badgeColor}">${game.era}</span>
+                            <span class="text-xs font-mono text-gray-400">${game.year}</span>
+                        </div>
+                        <h3 class="text-xl font-black brand-font text-white group-hover:text-cyan-300 transition mb-1">${game.title}</h3>
+                        <p class="text-xs text-pink-400 font-mono mb-3">${game.city}</p>
+                        <p class="text-gray-300 text-xs leading-relaxed line-clamp-3 mb-4">${game.summary}</p>
+                    </div>
+                    <div class="pt-3 border-t border-gray-800/80 flex items-center justify-between text-xs font-semibold">
+                        <span class="text-gray-400 font-mono text-[11px]">${game.missions.length} Archived Missions</span>
+                        <span class="neon-text-cyan flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Explore <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Render Game Hub View with Dynamic Category Filter
+        function renderGameView(gameId) {
+            const game = gtaDatabase[gameId];
+            if (!game) return;
+
+            const header = document.getElementById("game-header");
+            const borderColor = game.color === "pink" ? "neon-border-pink" : (game.color === "gold" ? "neon-border-gold" : "neon-border-cyan");
+            header.className = `glass-card p-6 md:p-8 ${borderColor}`;
+            
+            header.innerHTML = `
+                <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 border-b border-gray-800 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-mono text-pink-400 uppercase tracking-widest">${game.era} &bull; ${game.year}</span>
+                        <h2 class="text-2xl sm:text-4xl font-black brand-font text-white mt-1">${game.title}</h2>
+                        <p class="text-xs font-mono text-gray-400 mt-1"><i class="fa-solid fa-location-dot text-cyan-400"></i> ${game.city}</p>
+                    </div>
+                    <button onclick="navigateTo('dashboard')" class="w-fit text-xs px-3.5 py-2 bg-gray-900 border border-gray-700 hover:border-cyan-400 text-gray-300 rounded-lg transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> All Games
+                    </button>
+                </div>
+                <div class="space-y-2">
+                    <h4 class="text-xs font-semibold text-cyan-300 uppercase tracking-wide">Story & Lore Briefing</h4>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">${game.summary}</p>
+                </div>
+            `;
+
+            // Setup Categories
+            const filterContainer = document.getElementById("category-filters");
+            filterContainer.innerHTML = "";
+            const categories = game.categories || ["All"];
+
+            categories.forEach(cat => {
+                const btn = document.createElement("button");
+                const isActive = currentState.activeCategory === cat;
+                btn.className = `text-xs px-3 py-1.5 rounded-full font-mono transition border ${
+                    isActive 
+                        ? "bg-cyan-500/20 text-cyan-300 border-cyan-400 font-bold" 
+                        : "bg-gray-900 text-gray-400 border-gray-800 hover:border-gray-700 hover:text-white"
+                }`;
+                btn.textContent = cat;
+                btn.onclick = () => {
+                    currentState.activeCategory = cat;
+                    renderGameView(gameId);
+                };
+                filterContainer.appendChild(btn);
+            });
+
+            // Filter Missions
+            const filteredMissions = game.missions.filter(m => 
+                currentState.activeCategory === "All" || m.cat === currentState.activeCategory
+            );
+
+            const missionsList = document.getElementById("missions-list");
+            document.getElementById("mission-count").textContent = `${filteredMissions.length} Missions`;
+            missionsList.innerHTML = "";
+
+            filteredMissions.forEach((mission, idx) => {
+                const mCard = document.createElement("div");
+                mCard.className = "glass-card p-4 border border-gray-800 hover:border-cyan-400 cursor-pointer flex flex-col justify-between group";
+                mCard.onclick = () => navigateTo("mission", game.id, mission.id);
+
+                mCard.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between text-[11px] text-gray-500 font-mono mb-2">
+                            <span class="text-xs px-2 py-0.5 rounded bg-gray-900 text-cyan-400 border border-gray-800">${mission.cat || 'Story'}</span>
+                            <span class="text-pink-400 font-semibold">${mission.giver}</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-white group-hover:text-cyan-400 transition mb-2">${mission.title}</h4>
+                        <p class="text-xs text-gray-400 line-clamp-2 mb-3">${mission.objective}</p>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-cyan-400 font-semibold pt-2 border-t border-gray-900">
+                        <span>Walkthrough & Gold Checklist</span>
+                        <i class="fa-solid fa-chevron-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                `;
+                missionsList.appendChild(mCard);
+            });
+        }
+
+        // Render Mission Detail View with Gold Medal Checklist
+        function renderMissionView(gameId, missionId) {
+            const game = gtaDatabase[gameId];
+            if (!game) return;
+            const mission = game.missions.find(m => m.id === missionId);
+            if (!mission) return;
+
+            const content = document.getElementById("mission-content");
+            const videoQuery = `${game.title} ${mission.title} Walkthrough 100% Gold`;
+            const youtubeUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(videoQuery)}`;
+
+            content.innerHTML = `
+                <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-6">
+                    <button onclick="navigateTo('game', '${game.id}')" class="text-xs px-3 py-1.5 bg-gray-900 border border-gray-700 hover:border-cyan-400 text-gray-300 rounded transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Back to ${game.title}
+                    </button>
+                    <span class="text-xs font-mono px-3 py-1 bg-pink-950/60 border border-pink-700 text-pink-300 rounded-full">
+                        Client: ${mission.giver}
+                    </span>
+                </div>
+
+                <div class="space-y-4 mb-6">
+                    <div class="flex items-center gap-2 text-xs font-mono text-cyan-400">
+                        <span class="px-2 py-0.5 bg-gray-900 border border-gray-800 rounded">${mission.cat || 'Main Mission'}</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black brand-font text-white">${mission.title}</h2>
+                    <div class="p-4 bg-gray-950/80 border-l-4 border-cyan-400 rounded-r-lg">
+                        <h4 class="text-xs font-mono uppercase text-cyan-400 mb-1">Primary Objective</h4>
+                        <p class="text-xs sm:text-sm text-gray-200">${mission.objective}</p>
+                    </div>
+                </div>
+
+                <!-- Step-by-Step Instructions -->
+                <div class="space-y-4 mb-6">
+                    <h3 class="text-base font-bold brand-font text-white flex items-center gap-2">
+                        <i class="fa-solid fa-route text-pink-500"></i> Step-by-Step Walkthrough
+                    </h3>
+                    <ol class="space-y-2.5">
+                        ${mission.walkthrough.map((step, idx) => `
+                            <li class="flex items-start gap-3 bg-gray-900/60 p-3 rounded-lg border border-gray-800">
+                                <span class="w-5 h-5 flex items-center justify-center rounded-full bg-pink-600/30 border border-pink-500 text-pink-300 font-mono text-[11px] shrink-0 mt-0.5">
+                                    ${idx + 1}
+                                </span>
+                                <span class="text-xs sm:text-sm text-gray-300 leading-relaxed">${step}</span>
+                            </li>
+                        `).join('')}
+                    </ol>
+                </div>
+
+                <!-- Gold / 100% Checklist Requirements -->
+                ${mission.gold && mission.gold.length > 0 ? `
+                    <div class="mb-6 p-4 bg-amber-950/30 border border-amber-600/40 rounded-xl space-y-2">
+                        <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-amber-400"></i> Gold Medal / 100% Completion Checklist
+                        </h4>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            ${mission.gold.map(req => `
+                                <li class="text-xs text-amber-200/90 flex items-center gap-2 bg-gray-900/80 p-2 rounded border border-amber-900/50">
+                                    <i class="fa-solid fa-check text-green-400 text-[10px]"></i> ${req}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+
+                <!-- Pro Strategy Tip -->
+                ${mission.tip ? `
+                    <div class="mb-6 p-4 bg-cyan-950/30 border border-cyan-700/50 rounded-xl flex items-start gap-3">
+                        <i class="fa-solid fa-lightbulb text-cyan-400 text-base mt-0.5"></i>
+                        <div>
+                            <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wide">Pro Strategy Tip</h4>
+                            <p class="text-xs text-cyan-200/90 mt-0.5">${mission.tip}</p>
+                        </div>
+                    </div>
+                ` : ''}
+
+                <!-- Video Search Reference -->
+                <div class="space-y-3 pt-6 border-t border-gray-800">
+                    <h3 class="text-base font-bold brand-font text-white flex items-center gap-2">
+                        <i class="fa-brands fa-youtube text-red-500"></i> Video Guide Search
+                    </h3>
+                    
+                    <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-circle-play text-2xl text-red-500"></i>
+                            <div>
+                                <h4 class="text-xs font-semibold text-white">${videoQuery}</h4>
+                                <p class="text-[10px] text-gray-500">Precision YouTube Walkthrough Query</p>
+                            </div>
+                        </div>
+                        <a href="${youtubeUrl}" target="_blank" rel="noopener noreferrer" 
+                            class="neon-border-pink bg-red-600/20 hover:bg-red-600 text-white font-bold text-xs uppercase px-4 py-2 rounded-lg transition flex items-center gap-2 shrink-0">
+                            Search Video Guides <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update Dynamic Breadcrumbs
+        function updateBreadcrumb() {
+            const nav = document.getElementById("breadcrumb");
+            let html = `<button onclick="navigateTo('dashboard')" class="hover:text-cyan-400 shrink-0"><i class="fa-solid fa-house"></i> Vault</button>`;
+
+            if (currentState.activeGameId && gtaDatabase[currentState.activeGameId]) {
+                const game = gtaDatabase[currentState.activeGameId];
+                html += ` <i class="fa-solid fa-chevron-right text-[10px] text-gray-600 shrink-0"></i> `;
+                if (currentState.view === "game") {
+                    html += `<span class="text-cyan-400 font-bold shrink-0">${game.title}</span>`;
+                } else {
+                    html += `<button onclick="navigateTo('game', '${game.id}')" class="hover:text-cyan-400 shrink-0">${game.title}</button>`;
+                }
+            }
+
+            if (currentState.activeMissionId && currentState.activeGameId) {
+                const game = gtaDatabase[currentState.activeGameId];
+                const mission = game.missions.find(m => m.id === currentState.activeMissionId);
+                if (mission) {
+                    html += ` <i class="fa-solid fa-chevron-right text-[10px] text-gray-600 shrink-0"></i> `;
+                    html += `<span class="text-pink-400 font-bold shrink-0">${mission.title}</span>`;
+                }
+            }
+
+            nav.innerHTML = html;
+        }
+
+        // Global Search Engine
+        function setupSearch() {
+            const input = document.getElementById("global-search");
+            const resultsDiv = document.getElementById("search-results");
+
+            input.addEventListener("input", (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                if (query.length < 2) {
+                    resultsDiv.classList.add("hidden");
+                    return;
+                }
+
+                let matches = [];
+                Object.values(gtaDatabase).forEach(game => {
+                    if (game.title.toLowerCase().includes(query) || game.city.toLowerCase().includes(query)) {
+                        matches.push({ type: "game", gameId: game.id, label: game.title, sub: `${game.era} (${game.year})` });
+                    }
+                    game.missions.forEach(m => {
+                        if (m.title.toLowerCase().includes(query) || m.objective.toLowerCase().includes(query) || m.giver.toLowerCase().includes(query) || (m.cat && m.cat.toLowerCase().includes(query))) {
+                            matches.push({ type: "mission", gameId: game.id, missionId: m.id, label: m.title, sub: `${game.title} &bull; ${m.giver}` });
+                        }
+                    });
+                });
+
+                if (matches.length === 0) {
+                    resultsDiv.innerHTML = `<div class="p-3 text-xs text-gray-500 font-mono">No matching lore, heist, or mission found.</div>`;
+                } else {
+                    resultsDiv.innerHTML = matches.map(item => `
+                        <div class="p-3 hover:bg-gray-800 cursor-pointer flex items-center justify-between"
+                            onclick="handleSearchClick('${item.type}', '${item.gameId}', '${item.missionId || ''}')">
+                            <div>
+                                <h4 class="text-xs font-bold text-white">${item.label}</h4>
+                                <p class="text-[10px] text-cyan-400 font-mono">${item.sub}</p>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[10px] text-gray-500"></i>
+                        </div>
+                    `).join('');
+                }
+                resultsDiv.classList.remove("hidden");
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!input.contains(e.target) && !resultsDiv.contains(e.target)) {
+                    resultsDiv.classList.add("hidden");
+                }
+            });
+        }
+
+        function handleSearchClick(type, gameId, missionId) {
+            document.getElementById("search-results").classList.add("hidden");
+            document.getElementById("global-search").value = "";
+            if (type === "game") {
+                navigateTo("game", gameId);
+            } else {
+                navigateTo("mission", gameId, missionId);
+            }
+        }
+
+        // Safehouse Chat Handler
+        function setupChat() {
+            const form = document.getElementById("chat-form");
+            const chatBox = document.getElementById("chat-box");
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const user = document.getElementById("chat-user").value.trim();
+                const msg = document.getElementById("chat-msg").value.trim();
+                if (!user || !msg) return;
+
+                appendChatMessage(user, msg, "text-pink-400");
+                document.getElementById("chat-msg").value = "";
+
+                // Simulated automated reply
+                setTimeout(() => {
+                    appendChatMessage("Lester_N94", `Copy that @${user}. Check the Gold Medal requirements on the mission page for exact timing breakdowns!`, "text-yellow-400");
+                }, 1200);
+            });
+        }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById("chat-msg").value = promptText;
+            if(!document.getElementById("chat-user").value) {
+                document.getElementById("chat-user").value = "Vesper_Player";
+            }
+        }
+
+        function appendChatMessage(author, message, colorClass) {
+            const chatBox = document.getElementById("chat-box");
+            const msgDiv = document.createElement("div");
+            msgDiv.className = "bg-gray-900/80 border-l-4 border-pink-500 p-3 rounded";
+            msgDiv.innerHTML = `
+                <div class="flex items-center justify-between mb-1">
+                    <span class="font-bold ${colorClass}">${escapeHtml(author)}</span>
+                    <span class="text-[10px] font-mono text-gray-500">Just now</span>
+                </div>
+                <p class="text-gray-300">${escapeHtml(message)}</p>
+            `;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function scrollToChat() {
+            document.getElementById("chat-section").scrollIntoView({ behavior: "smooth" });
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+<!-- ... existing code -->
